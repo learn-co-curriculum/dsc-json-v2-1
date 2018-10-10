@@ -1,8 +1,4 @@
 
-***This is the template for creating a readme lesson for Data Science. Please make sure to change the title to the appropriate topic, add an introduction, objectives (which should be taken from the lesson's outlined SWBATS), the lesson's content, and summary.***
-
-> Note: If possible, structure the lesson's content according to the listed objectives. This helps to give a flow and framework for the material being presented to students.
-
 # JSON and XML
 
 ## Introduction
@@ -48,13 +44,15 @@ When parsing the data, we'll have to navigate through this hierarchical structur
 import xml.etree.ElementTree as ET
 ```
 
-First we create 
+First we create the tree and retrieve the root tag.
 
 
 ```python
 tree = ET.parse('nyc_2001_campaign_finance.xml')
 root = tree.getroot()
 ```
+
+Afterwards, we can iterate through the root node's children:
 
 
 ```python
@@ -65,64 +63,435 @@ for child in root:
     row {}
 
 
-
-```python
-import pandas as pd
-```
+Due to the nested structure, you often have to dig further down the tree:
 
 
 ```python
-df = pd.read_html('nyc_2001_campaign_finance.xml')
-df.head()
-
+#Count is added here to limit the number of results
+count = 0
+for child in root:
+    print('Child:\n')
+    print(child.tag, child.attrib)
+    print('Grandchildren:')
+    for grandchild in child:
+        count += 1
+        if count < 10:
+            print(grandchild.tag, grandchild.attrib)
+    print('\n\n')
 ```
 
-
-    ---------------------------------------------------------------------------
-
-    ValueError                                Traceback (most recent call last)
-
-    <ipython-input-3-37d170b78445> in <module>()
-    ----> 1 df = pd.read_html('nyc_2001_campaign_finance.xml')
-          2 df.head()
-
-
-    ~/anaconda3/lib/python3.6/site-packages/pandas/io/html.py in read_html(io, match, flavor, header, index_col, skiprows, attrs, parse_dates, tupleize_cols, thousands, encoding, decimal, converters, na_values, keep_default_na, displayed_only)
-        985                   decimal=decimal, converters=converters, na_values=na_values,
-        986                   keep_default_na=keep_default_na,
-    --> 987                   displayed_only=displayed_only)
+    Child:
+    
+    row {}
+    Grandchildren:
+    row {'_id': '1', '_uuid': 'E3E9CC9F-7443-43F6-94AF-B5A0F802DBA1', '_position': '1', '_address': 'https://data.cityofnewyork.us/resource/_8dhd-zvi6/1'}
+    row {'_id': '2', '_uuid': '9D257416-581A-4C42-85CC-B6EAD9DED97F', '_position': '2', '_address': 'https://data.cityofnewyork.us/resource/_8dhd-zvi6/2'}
+    row {'_id': '3', '_uuid': 'B80D7891-93CF-49E8-86E8-182B618E68F2', '_position': '3', '_address': 'https://data.cityofnewyork.us/resource/_8dhd-zvi6/3'}
+    row {'_id': '4', '_uuid': 'BB012003-78F5-406D-8A87-7FF8A425EE3F', '_position': '4', '_address': 'https://data.cityofnewyork.us/resource/_8dhd-zvi6/4'}
+    row {'_id': '5', '_uuid': '945825F9-2F5D-47C2-A16B-75B93E61E1AD', '_position': '5', '_address': 'https://data.cityofnewyork.us/resource/_8dhd-zvi6/5'}
+    row {'_id': '6', '_uuid': '9546F502-39D6-4340-B37E-60682EB22274', '_position': '6', '_address': 'https://data.cityofnewyork.us/resource/_8dhd-zvi6/6'}
+    row {'_id': '7', '_uuid': '4B6C74AD-17A0-4B7E-973A-2592D68A687D', '_position': '7', '_address': 'https://data.cityofnewyork.us/resource/_8dhd-zvi6/7'}
+    row {'_id': '8', '_uuid': 'ABD22A5E-B8DA-446F-82BC-93AA11AF99DF', '_position': '8', '_address': 'https://data.cityofnewyork.us/resource/_8dhd-zvi6/8'}
+    row {'_id': '9', '_uuid': '7CD36FB5-600F-44F5-A10C-CB3434B6805F', '_position': '9', '_address': 'https://data.cityofnewyork.us/resource/_8dhd-zvi6/9'}
+    
+    
     
 
-    ~/anaconda3/lib/python3.6/site-packages/pandas/io/html.py in _parse(flavor, io, match, attrs, encoding, displayed_only, **kwargs)
-        813             break
-        814     else:
-    --> 815         raise_with_traceback(retained)
-        816 
-        817     ret = []
 
-
-    ~/anaconda3/lib/python3.6/site-packages/pandas/compat/__init__.py in raise_with_traceback(exc, traceback)
-        401         if traceback == Ellipsis:
-        402             _, _, traceback = sys.exc_info()
-    --> 403         raise exc.with_traceback(traceback)
-        404 else:
-        405     # this version of raise is a syntax error in Python 3
-
-
-    ValueError: No tables found
-
+Due to the nested structure, there is alos a convenience method .iter() that allows you to iterate through all sub generations, regardless of depth.
 
 
 ```python
-## Objective 2 content
+count = 0
+for element in root.iter():
+    count += 1
+    if count < 10:
+        print(element.tag, element.attrib)
 ```
 
-## Objective 3 Title
+    response {}
+    row {}
+    row {'_id': '1', '_uuid': 'E3E9CC9F-7443-43F6-94AF-B5A0F802DBA1', '_position': '1', '_address': 'https://data.cityofnewyork.us/resource/_8dhd-zvi6/1'}
+    candid {}
+    candname {}
+    officeboro {}
+    canclass {}
+    row {'_id': '2', '_uuid': '9D257416-581A-4C42-85CC-B6EAD9DED97F', '_position': '2', '_address': 'https://data.cityofnewyork.us/resource/_8dhd-zvi6/2'}
+    election {}
+
+
+With some finese, we could also extract all of these row tags intoa dataframe....
 
 
 ```python
-## Objective 3 content
+dfs = []
+for n, element in enumerate(root.iter('row')):
+    if n > 0:
+        dfs.append(pd.DataFrame.from_dict(element.attrib, orient='index').transpose())
+df = pd.concat(dfs)
+print(len(df))
+df.head()
 ```
+
+    285
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>_id</th>
+      <th>_uuid</th>
+      <th>_position</th>
+      <th>_address</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>E3E9CC9F-7443-43F6-94AF-B5A0F802DBA1</td>
+      <td>1</td>
+      <td>https://data.cityofnewyork.us/resource/_8dhd-z...</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>9D257416-581A-4C42-85CC-B6EAD9DED97F</td>
+      <td>2</td>
+      <td>https://data.cityofnewyork.us/resource/_8dhd-z...</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>3</td>
+      <td>B80D7891-93CF-49E8-86E8-182B618E68F2</td>
+      <td>3</td>
+      <td>https://data.cityofnewyork.us/resource/_8dhd-z...</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>4</td>
+      <td>BB012003-78F5-406D-8A87-7FF8A425EE3F</td>
+      <td>4</td>
+      <td>https://data.cityofnewyork.us/resource/_8dhd-z...</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>5</td>
+      <td>945825F9-2F5D-47C2-A16B-75B93E61E1AD</td>
+      <td>5</td>
+      <td>https://data.cityofnewyork.us/resource/_8dhd-z...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+### Shew!
+As you can see, parsing XML can get a bit complicated. It's a useful example for when we begin web scraping as HTML will have a similar structure that we'll need to exploit. That said, XML is an outdated format, and JSON is the standard. So with that, let's turn our attention to the format you'll be most apt to work with and encounter: JSON!!
+
+## The JSON Module
+
+https://docs.python.org/3.6/library/json.html
+
+
+```python
+import json
+```
+
+To load a json file, we first open the file using python's built in function and then pass that file object to the json module's load method. As you can see, this loaded the data as a dictionary.
+
+
+```python
+f = open('nyc_2001_campaign_finance.json')
+data = json.load(f)
+print(type(data))
+```
+
+    <class 'dict'>
+
+
+Json files are often nested in a hierarchical strucutre and will have data structures analagous to python dictionaries and lists. We can begin to investigate a particular file by using our traditional python methods. Here's all of the built in supported data types in JSON and their counterparts in python: 
+
+<img src="json_python_datatypes.png" width=500>
+
+Check the keys of the dictionary:
+
+
+```python
+data.keys()
+```
+
+
+
+
+    dict_keys(['meta', 'data'])
+
+
+
+Investigate what data types are stored within the values associated with those keys:
+
+
+```python
+for v in data.values():
+    print(type(v))
+```
+
+    <class 'dict'>
+    <class 'list'>
+
+
+We can quickly preview the first dictionary as a DataFrame
+
+
+```python
+pd.DataFrame.from_dict(data['meta'])
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>view</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>attribution</th>
+      <td>Campaign Finance Board (CFB)</td>
+    </tr>
+    <tr>
+      <th>averageRating</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>category</th>
+      <td>City Government</td>
+    </tr>
+    <tr>
+      <th>columns</th>
+      <td>[{'id': -1, 'name': 'sid', 'dataTypeName': 'me...</td>
+    </tr>
+    <tr>
+      <th>createdAt</th>
+      <td>1315950830</td>
+    </tr>
+    <tr>
+      <th>description</th>
+      <td>A listing of public funds payments for candida...</td>
+    </tr>
+    <tr>
+      <th>displayType</th>
+      <td>table</td>
+    </tr>
+    <tr>
+      <th>downloadCount</th>
+      <td>1470</td>
+    </tr>
+    <tr>
+      <th>flags</th>
+      <td>[default, restorable, restorePossibleForType]</td>
+    </tr>
+    <tr>
+      <th>grants</th>
+      <td>[{'inherited': False, 'type': 'viewer', 'flags...</td>
+    </tr>
+    <tr>
+      <th>hideFromCatalog</th>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>hideFromDataJson</th>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>id</th>
+      <td>8dhd-zvi6</td>
+    </tr>
+    <tr>
+      <th>indexUpdatedAt</th>
+      <td>1536596254</td>
+    </tr>
+    <tr>
+      <th>metadata</th>
+      <td>{'rdfSubject': '0', 'rdfClass': '', 'attachmen...</td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td>2001 Campaign Payments</td>
+    </tr>
+    <tr>
+      <th>newBackend</th>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>numberOfComments</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>oid</th>
+      <td>4140996</td>
+    </tr>
+    <tr>
+      <th>owner</th>
+      <td>{'id': '5fuc-pqz2', 'displayName': 'NYC OpenDa...</td>
+    </tr>
+    <tr>
+      <th>provenance</th>
+      <td>official</td>
+    </tr>
+    <tr>
+      <th>publicationAppendEnabled</th>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>publicationDate</th>
+      <td>1371845179</td>
+    </tr>
+    <tr>
+      <th>publicationGroup</th>
+      <td>240370</td>
+    </tr>
+    <tr>
+      <th>publicationStage</th>
+      <td>published</td>
+    </tr>
+    <tr>
+      <th>query</th>
+      <td>{}</td>
+    </tr>
+    <tr>
+      <th>rights</th>
+      <td>[read]</td>
+    </tr>
+    <tr>
+      <th>rowClass</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th>rowsUpdatedAt</th>
+      <td>1371845177</td>
+    </tr>
+    <tr>
+      <th>rowsUpdatedBy</th>
+      <td>5fuc-pqz2</td>
+    </tr>
+    <tr>
+      <th>tableAuthor</th>
+      <td>{'id': '5fuc-pqz2', 'displayName': 'NYC OpenDa...</td>
+    </tr>
+    <tr>
+      <th>tableId</th>
+      <td>932968</td>
+    </tr>
+    <tr>
+      <th>tags</th>
+      <td>[finance, campaign finance board, cfb, nyccfb,...</td>
+    </tr>
+    <tr>
+      <th>totalTimesRated</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>viewCount</th>
+      <td>233</td>
+    </tr>
+    <tr>
+      <th>viewLastModified</th>
+      <td>1536605717</td>
+    </tr>
+    <tr>
+      <th>viewType</th>
+      <td>tabular</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+Notice the column names which will be very useful!
+
+Investigate further information about the list stored under the 'data' key:
+
+
+```python
+len(data['data'])
+```
+
+
+
+
+    285
+
+
+
+Previewing the first entry:
+
+
+```python
+data['data'][0]
+```
+
+
+
+
+    [1,
+     'E3E9CC9F-7443-43F6-94AF-B5A0F802DBA1',
+     1,
+     1315925633,
+     '392904',
+     1315925633,
+     '392904',
+     '{\n  "invalidCells" : {\n    "1519001" : "TOTALPAY",\n    "1518998" : "PRIMARYPAY",\n    "1519000" : "RUNOFFPAY",\n    "1518999" : "GENERALPAY",\n    "1518994" : "OFFICECD",\n    "1518996" : "OFFICEDIST",\n    "1518991" : "ELECTION"\n  }\n}',
+     None,
+     'CANDID',
+     'CANDNAME',
+     None,
+     'OFFICEBORO',
+     None,
+     'CANCLASS',
+     None,
+     None,
+     None,
+     None]
+
+
 
 ## Summary
-Summary goes here
+As you can see, there's still a lot going on here with the deeply nested structure of some of these data files. In the upcoming lab, you'll get a chance to practice loading files and conducting some initial preview of the data as we did here.
