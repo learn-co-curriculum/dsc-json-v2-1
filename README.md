@@ -3,7 +3,7 @@
 
 ## Introduction
 
-In this lecture, we'll continue investigating new formats for datasets. Specifically, we'll investigate two of the most popular data formats for the web: JSON and XML including strenghts and weaknesses.
+In this lecture, we'll continue investigating new formats for datasets. Specifically, we'll investigate two of the most popular data formats for the web: JSON and XML including strengths and weaknesses.
 
 ## Objectives
 You will be able to:
@@ -98,7 +98,7 @@ for child in root:
     
 
 
-Due to the nested structure, there is alos a convenience method .iter() that allows you to iterate through all sub generations, regardless of depth.
+Due to the nested structure, there is also a convenience method .iter() that allows you to iterate through all sub generations, regardless of depth.
 
 
 ```python
@@ -120,7 +120,7 @@ for element in root.iter():
     election {}
 
 
-With some finese, we could also extract all of these row tags intoa dataframe....
+With some finesse, we could also extract all of these row tags into a dataframe....
 
 
 ```python
@@ -229,7 +229,7 @@ print(type(data))
     <class 'dict'>
 
 
-Json files are often nested in a hierarchical strucutre and will have data structures analagous to python dictionaries and lists. We can begin to investigate a particular file by using our traditional python methods. Here's all of the built in supported data types in JSON and their counterparts in python: 
+Json files are often nested in a hierarchical structure and will have data structures analogous to python dictionaries and lists. We can begin to investigate a particular file by using our traditional python methods. Here's all of the built in supported data types in JSON and their counterparts in python: 
 
 <img src="json_python_datatypes.png" width=500>
 
