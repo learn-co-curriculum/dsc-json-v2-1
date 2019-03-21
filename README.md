@@ -3,7 +3,7 @@
 
 ## Introduction
 
-In this lecture, we'll continue investigating new formats for datasets. Specifically, we'll investigate two of the most popular data formats for the web: JSON and XML including strengths and weaknesses.
+In this lecture, you'll continue investigating new formats for datasets. Specifically, you'll investigate two of the most popular data formats for the web: JSON and XML including each of their strengths and weaknesses.
 
 ## Objectives
 You will be able to:
@@ -14,7 +14,7 @@ You will be able to:
 
 ## XML
 
-XML stands for 'Extensible Markup Language'. You may note the acronym's similarity to HTML; HyperText Markup Language. While HTML tells us how to display a page, XML is used to store the data and content of the page itself. Like HTML, xml uses tags to seperate and organize data in a hierarchical manner. Here's a brief preview of an XML file:  
+XML stands for 'Extensible Markup Language'. You may note the acronym's similarity to HTML; HyperText Markup Language. While HTML contains information for how to display a page, XML is used to store the data and content of the page itself. Like HTML, XML uses tags to seperate and organize data in a hierarchical manner. Here's a brief preview of an XML file:  
 
 <img src="xml_preview2.png" width=850>
 
@@ -24,27 +24,27 @@ JSON stand for JavaScript Object Notation. It came after XML and was meant to st
 <img src="json_preview.png" width=850>
 
 ## Loading XML and JSON Data
-For both of these data formats, prebuilt modules exist that will give us a powerful starting point for accessing and manipulating the underlying data itself. As you'll see the newer version, JSON, is simpler and more flexible then its predecessor XML.
+For both of these data formats, prebuilt modules exist that will give you a powerful starting point for accessing and manipulating the underlying data itself. As you'll see the newer version, JSON, is simpler and more flexible then its predecessor XML.
 
 ### The XML Module
 
 You can check out the full details of the XML package here:  
 https://docs.python.org/3.6/library/xml.html#  
-but we'll be simply using a submodule, ElementTree:   
+but for now, you'll simply be using a submodule, ElementTree:   
 https://docs.python.org/3.6/library/xml.etree.elementtree.html#module-xml.etree.ElementTree  
 
 Notice the nested structure of the XML file:  
 
 <img src="xml_preview2.png" width=850>  
 
-When parsing the data, we'll have to navigate through this hierarchical structure. This is the idea behind the `ElementTree` submodule that we'll be using. We'll start with a root note and then iterate over its children, each of which should have a tag (the name in <angle_brackets\>) and an associated attribute (the data between the two angle brackets <start\> data <stop\>).
+When parsing the data, you'll have to navigate through this hierarchical structure. This is the idea behind the `ElementTree` submodule. You'll start with a root note and then iterate over its children, each of which should have a tag (the name in <angle_brackets\>) and an associated attribute (the data between the two angle brackets <start\> data <stop\>).
 
 
 ```python
 import xml.etree.ElementTree as ET
 ```
 
-First we create the tree and retrieve the root tag.
+First you create the tree and retrieve the root tag.
 
 
 ```python
@@ -52,7 +52,7 @@ tree = ET.parse('nyc_2001_campaign_finance.xml')
 root = tree.getroot()
 ```
 
-Afterwards, we can iterate through the root node's children:
+Afterwards, you can iterate through the root node's children:
 
 
 ```python
@@ -120,7 +120,7 @@ for element in root.iter():
     election {}
 
 
-With some finesse, we could also extract all of these row tags into a dataframe....
+With some finesse, you could also extract all of these row tags into a dataframe....
 
 
 ```python
@@ -206,7 +206,7 @@ df.head()
 
 
 ### Shew!
-As you can see, parsing XML can get a bit complicated. It's a useful example for when we begin web scraping as HTML will have a similar structure that we'll need to exploit. That said, XML is an outdated format, and JSON is the standard. So with that, let's turn our attention to the format you'll be most apt to work with and encounter: JSON!!
+As you can see, parsing XML can get a bit complicated. It's a useful example for web scraping as HTML will have a similar structure that you'll need to exploit. That said, XML is an outdated format, and JSON is the new standard. So with that, let's take a look to the format you'll be most apt to work with and encounter: JSON!!
 
 ## The JSON Module
 
@@ -217,7 +217,7 @@ https://docs.python.org/3.6/library/json.html
 import json
 ```
 
-To load a json file, we first open the file using python's built in function and then pass that file object to the json module's load method. As you can see, this loaded the data as a dictionary.
+To load a json file, you first open the file using python's built in function and then pass that file object to the json module's load method. As you can see, this loaded the data as a dictionary.
 
 
 ```python
@@ -229,7 +229,7 @@ print(type(data))
     <class 'dict'>
 
 
-Json files are often nested in a hierarchical structure and will have data structures analogous to python dictionaries and lists. We can begin to investigate a particular file by using our traditional python methods. Here's all of the built in supported data types in JSON and their counterparts in python: 
+Json files are often nested in a hierarchical structure and will have data structures analogous to python dictionaries and lists. You can begin to investigate a particular file by using our traditional python methods. Here's all of the built in supported data types in JSON and their counterparts in python: 
 
 <img src="json_python_datatypes.png" width=500>
 
@@ -259,7 +259,7 @@ for v in data.values():
     <class 'list'>
 
 
-We can quickly preview the first dictionary as a DataFrame
+You can quickly preview the first dictionary as a DataFrame
 
 
 ```python
@@ -494,4 +494,4 @@ data['data'][0]
 
 
 ## Summary
-As you can see, there's still a lot going on here with the deeply nested structure of some of these data files. In the upcoming lab, you'll get a chance to practice loading files and conducting some initial preview of the data as we did here.
+As you can see, there's still a lot going on here with the deeply nested structure of some of these data files. In the upcoming lab, you'll get a chance to practice loading files and conducting some initial preview of the data as you did here.
