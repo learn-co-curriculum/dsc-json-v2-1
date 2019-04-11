@@ -14,17 +14,17 @@ You will be able to:
 
 ## XML
 
-XML stands for 'Extensible Markup Language'. You may note the acronym's similarity to HTML; HyperText Markup Language. While HTML contains information for how to display a page, XML is used to store the data and content of the page itself. Like HTML, XML uses tags to seperate and organize data in a hierarchical manner. Here's a brief preview of an XML file:  
+XML stands for 'Extensible Markup Language'. You may note the acronym's similarity to HTML; HyperText Markup Language. While HTML contains information for how to display a page, XML is used to store the data and content of the page itself. Like HTML, XML uses tags to separate and organize data in a hierarchical manner. Here's a brief preview of an XML file:  
 
-<img src="images/xml_preview2.png" width=850>
+<img src="images/xml_preview2.png" width="850">
 
 ## JSON
 
-JSON stand for JavaScript Object Notation. It came after XML and was meant to streamline many data transportation issues at the time. It is now the common standard amongst data transfers on the web and has numerous parsing packages for numerous languages (including Python)! Here's a brief preview of the same file above now in JSON:  
-<img src="images/json_preview.png" width=850>
+JSON stands for JavaScript Object Notation. It came after XML and was meant to streamline many data transportation issues at the time. It is now the common standard amongst data transfers on the web and has numerous parsing packages for numerous languages (including Python)! Here's a brief preview of the same file above now in JSON:  
+<img src="images/json_preview.png" width="850">
 
 ## Loading XML and JSON Data
-For both of these data formats, prebuilt modules exist that will give you a powerful starting point for accessing and manipulating the underlying data itself. As you'll see the newer version, JSON, is simpler and more flexible then its predecessor XML.
+For both of these data formats, prebuilt modules exist that will give you a powerful starting point for accessing and manipulating the underlying data itself. As you'll see the newer version, JSON, is simpler and more flexible than its predecessor XML.
 
 ### The XML Module
 
@@ -35,7 +35,7 @@ https://docs.python.org/3.6/library/xml.etree.elementtree.html#module-xml.etree.
 
 Notice the nested structure of the XML file:  
 
-<img src="images/xml_preview2.png" width=850>  
+<img src="images/xml_preview2.png" width="850">  
 
 When parsing the data, you'll have to navigate through this hierarchical structure. This is the idea behind the `ElementTree` submodule. You'll start with a root note and then iterate over its children, each of which should have a tag (the name in <angle_brackets\>) and an associated attribute (the data between the two angle brackets <start\> data <stop\>).
 
