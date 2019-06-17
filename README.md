@@ -124,6 +124,11 @@ With some finesse, you could also extract all of these row tags into a dataframe
 
 
 ```python
+import pandas as pd
+```
+
+
+```python
 dfs = []
 for n, element in enumerate(root.iter('row')):
     if n > 0:
