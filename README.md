@@ -222,7 +222,7 @@ https://docs.python.org/3.6/library/json.html
 import json
 ```
 
-To load a json file, you first open the file using python's built in function and then pass that file object to the json module's load method. As you can see, this loaded the data as a dictionary.
+To load a json file, you first open the file using python's built-in function and then pass that file object to the json module's load method. As you can see, this loaded the data as a dictionary.
 
 
 ```python
@@ -234,7 +234,7 @@ print(type(data))
     <class 'dict'>
 
 
-Json files are often nested in a hierarchical structure and will have data structures analogous to python dictionaries and lists. You can begin to investigate a particular file by using our traditional python methods. Here's all of the built in supported data types in JSON and their counterparts in python: 
+Json files are often nested in a hierarchical structure and will have data structures analogous to python dictionaries and lists. You can begin to investigate a particular file by using our traditional python methods. Here's all of the built-in supported data types in JSON and their counterparts in python: 
 
 <img src="images/json_python_datatypes.png" width=500>
 
