@@ -12,13 +12,15 @@ You will be able to:
 
 ## JSON
 
-JSON stands for JavaScript Object Notation. When it was first introduced, JSON files were meant to streamline many data transportation issues at the time. It is now the common standard amongst data transfers on the web and has numerous parsing packages for numerous languages (including Python)! Here's a brief preview of a JSON file:  
+JSON stands for JavaScript Object Notation. When it was first introduced, JSON files were meant to streamline many data transportation issues at the time. It is now the common standard amongst data transfers on the web and has numerous parsing packages for numerous languages (including Python)! 
+
+Here's a brief preview of a JSON file:  
 
 <img src="images/json_preview.png" width="850">
 
 ## Loading JSON Data
 
-Prebuilt Python modules exist that will give you a powerful starting point for accessing and manipulating the underlying data in JSON files. 
+Prebuilt Python modules exist that will give you a powerful starting point for accessing and manipulating the underlying data in JSON files. We will work with the `json` module.
 
 ### The JSON Module
 
