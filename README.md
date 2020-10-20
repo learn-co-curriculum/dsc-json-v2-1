@@ -73,10 +73,11 @@ for v in data.values():
     <class 'list'>
 
 
-You can quickly preview the first dictionary as a DataFrame
+You can quickly preview the first dictionary as a `DataFrame`, but first we need to import the `pandas` package.
 
 
 ```python
+import pandas as pd
 pd.DataFrame.from_dict(data['meta'])
 ```
 
