@@ -129,7 +129,7 @@ data['meta']['view'].keys()
 
 
 
-That is a lot of keys! One way we might try to view all of that information is using the `pandas` package to make a table.
+That is a lot of keys. One way we might try to view all of that information is using the `pandas` package to make a table.
 
 
 ```python
@@ -756,7 +756,7 @@ data['meta']['view'].keys()
 
 
 
-Ok, `description` is the 7th one! Let's pull the value associated with the `description` key:
+Ok, `description` is the 7th one. Let's pull the value associated with the `description` key:
 
 
 ```python
@@ -770,7 +770,7 @@ data['meta']['view']['description']
 
 
 
-Great! This is the general process you will use when extracting information from a JSON file.
+This is the general process you will use when extracting information from a JSON file.
 
 ## Summary
-As you can see, there's a lot going on here with the deeply nested structure of JSON data files. In the upcoming lab, you'll get a chance to practice loading files and continuing to parse and extract the data as you did here.
+As you can see, there's a lot going on here with the deeply nested structure of JSON data files.
